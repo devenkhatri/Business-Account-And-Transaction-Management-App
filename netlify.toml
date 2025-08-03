@@ -5,6 +5,8 @@
 [build.environment]
   NODE_VERSION = "20.0.0"
   NPM_FLAGS = "--legacy-peer-deps"
+  NODE_ENV = "production"
+  PRISMA_SKIP_POSTINSTALL_GENERATE = "true"
 
 # Prisma configuration
 [[plugins]]
@@ -18,12 +20,6 @@
   package = "@netlify/plugin-prisma"
   [plugins.inputs]
     prismaSchemaPath = "./prisma/schema.prisma"
-
-# Environment variables
-[build.environment]
-  NODE_ENV = "production"
-  NPM_FLAGS = "--legacy-peer-deps"
-  PRISMA_SKIP_POSTINSTALL_GENERATE = "true"
 
 # Redirects for SPA
 [[redirects]]
