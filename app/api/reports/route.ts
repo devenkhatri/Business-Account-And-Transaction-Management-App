@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -34,7 +36,24 @@ export async function GET(request: NextRequest) {
         location: true,
       },
       orderBy: { date: 'desc' },
+    }).catch(error => {
+      console.error('Error fetching transactions:', error);
+      return [];
     });
+
+    if (!transactions || transactions.length === 0) {
+      return NextResponse.json({
+        transactions: [],
+        dailySummary: {},
+        accountSummary: {},
+        totals: {
+          credits: 0,
+          debits: 0,
+          count: 0,
+          net: 0
+        }
+      });
+    }
 
     if (format === 'csv') {
       const csvHeaders = 'Date,Transaction No,Type,Amount,Account,Location,Description\n';
