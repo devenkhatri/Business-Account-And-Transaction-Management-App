@@ -69,6 +69,17 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, [selectedLocationId]);
 
+  // Format currency in Indian Rupees
+  const formatINR = (amount: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      currencyDisplay: 'symbol'
+    }).format(amount);
+  };
+
   // Safety check to ensure metrics is never undefined
   const safeMetrics = metrics || {
     totalCredits: 0,
@@ -112,7 +123,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-2xl font-bold text-green-600">
-              ${safeMetrics.totalCredits.toFixed(2)}
+              {formatINR(safeMetrics.totalCredits)}
             </div>
           </CardContent>
         </Card>
@@ -125,7 +136,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-2xl font-bold text-red-600">
-              ${safeMetrics.totalDebits.toFixed(2)}
+              {formatINR(safeMetrics.totalDebits)}
             </div>
           </CardContent>
         </Card>
@@ -142,7 +153,7 @@ export default function DashboardPage() {
                 safeMetrics.netBalance >= 0 ? 'text-green-600' : 'text-red-600'
               }`}
             >
-              ${safeMetrics.netBalance.toFixed(2)}
+              {formatINR(safeMetrics.netBalance)}
             </div>
           </CardContent>
         </Card>

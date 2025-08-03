@@ -3,69 +3,83 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Clear existing data
-  await prisma.transaction.deleteMany();
-  await prisma.account.deleteMany();
-  await prisma.location.deleteMany();
+  // Clear existing data if tables exist
+  try {
+    await prisma.transaction.deleteMany();
+  } catch (e) {
+    console.log('Transaction table does not exist yet, skipping delete');
+  }
+  
+  try {
+    await prisma.account.deleteMany();
+  } catch (e) {
+    console.log('Account table does not exist yet, skipping delete');
+  }
+  
+  try {
+    await prisma.location.deleteMany();
+  } catch (e) {
+    console.log('Location table does not exist yet, skipping delete');
+  }
 
-  // Create locations
+  // Create locations in Indian cities
   const locations = await Promise.all([
     prisma.location.create({
       data: {
-        name: 'Main Office',
-        address: '123 Business St, City Center, State 12345',
+        name: 'Mumbai Head Office',
+        address: 'Nariman Point, Mumbai, Maharashtra 400021',
       },
     }),
     prisma.location.create({
       data: {
-        name: 'Branch A',
-        address: '456 Commerce Ave, Downtown, State 12346',
+        name: 'Delhi Branch',
+        address: 'Connaught Place, New Delhi, Delhi 110001',
       },
     }),
     prisma.location.create({
       data: {
-        name: 'Branch B',
-        address: '789 Market Rd, Uptown, State 12347',
+        name: 'Bangalore Branch',
+        address: 'MG Road, Bengaluru, Karnataka 560001',
       },
     }),
   ]);
 
-  // Create accounts
+  // Create accounts with Indian business names
   const accounts = await Promise.all([
     prisma.account.create({
       data: {
-        name: 'John Smith Enterprises',
-        phoneNumber: '+1-555-0101',
+        name: 'Sharma & Sons Trading Co.',
+        phoneNumber: '+91 98765 43210',
       },
     }),
     prisma.account.create({
       data: {
-        name: 'Sarah Johnson LLC',
-        phoneNumber: '+1-555-0102',
+        name: 'Patel Enterprises',
+        phoneNumber: '+91 98765 54321',
       },
     }),
     prisma.account.create({
       data: {
-        name: 'Tech Solutions Inc',
-        phoneNumber: '+1-555-0103',
+        name: 'Infinity IT Solutions',
+        phoneNumber: '+91 98765 65432',
       },
     }),
     prisma.account.create({
       data: {
-        name: 'Global Trading Co',
-        phoneNumber: '+1-555-0104',
+        name: 'Gupta Textiles',
+        phoneNumber: '+91 98765 76543',
       },
     }),
     prisma.account.create({
       data: {
-        name: 'Creative Studios',
-        phoneNumber: '+1-555-0105',
+        name: 'Agarwal Jewellers',
+        phoneNumber: '+91 98765 87654',
       },
     }),
     prisma.account.create({
       data: {
-        name: 'Retail Partners',
-        phoneNumber: '+1-555-0106',
+        name: 'Reddy Constructions',
+        phoneNumber: '+91 98765 98765',
       },
     }),
   ]);
@@ -79,22 +93,28 @@ async function main() {
     const date = new Date(now);
     date.setDate(date.getDate() - daysAgo);
     
-    const amount = Math.floor(Math.random() * 4990) + 10; // $10 to $5000
+    // Amounts in INR (₹500 to ₹500,000)
+    const amount = Math.floor(Math.random() * 499500) + 500;
     const type = Math.random() > 0.6 ? 'CREDIT' : 'DEBIT';
     const account = accounts[Math.floor(Math.random() * accounts.length)];
     const location = locations[Math.floor(Math.random() * locations.length)];
     
     const descriptions = [
-      'Payment received',
-      'Service fee',
-      'Product purchase',
-      'Consultation fee',
-      'Monthly subscription',
-      'Equipment lease',
-      'Software license',
-      'Training session',
-      'Marketing services',
+      'GST Payment',
+      'Goods purchase',
+      'Professional fees',
+      'Consultancy charges',
+      'Monthly maintenance',
+      'Rent payment',
+      'Software subscription',
+      'Training program',
+      'Digital marketing',
       'Office supplies',
+      'Freight charges',
+      'Bank charges',
+      'Salary payment',
+      'Utility bills',
+      'Travel expenses',
     ];
 
     transactions.push({

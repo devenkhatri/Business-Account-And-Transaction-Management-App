@@ -29,7 +29,15 @@ export function DailyBalanceChart({ data }: DailyBalanceChartProps) {
           <YAxis tick={{ fontSize: 12 }} />
           <Tooltip
             labelFormatter={(value) => new Date(value).toLocaleDateString()}
-            formatter={(value: number) => [`$${value.toFixed(2)}`, 'Amount']}
+            formatter={(value: number) => [
+              new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              }).format(value),
+              'Amount'
+            ]}
           />
           <Line
             type="monotone"

@@ -82,6 +82,27 @@ export default function AccountDetailPage() {
     );
   }
 
+  // Format currency in Indian style (e.g., ₹1,00,000.00)
+  const formatINR = (amount: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      currencyDisplay: 'symbol'
+    }).format(amount);
+  };
+
+  // Format date in Indian format (DD/MM/YYYY)
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
   const totalCredits = account.transactions
     .filter((t) => t.type === 'CREDIT')
     .reduce((sum, t) => sum + Number(t.amount), 0);
@@ -138,7 +159,7 @@ export default function AccountDetailPage() {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-lg font-semibold text-green-600">
-              ${totalCredits.toFixed(2)}
+              {formatINR(totalCredits)}
             </div>
           </CardContent>
         </Card>
@@ -151,7 +172,7 @@ export default function AccountDetailPage() {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-lg font-semibold text-red-600">
-              ${totalDebits.toFixed(2)}
+              {formatINR(totalDebits)}
             </div>
           </CardContent>
         </Card>
@@ -168,7 +189,7 @@ export default function AccountDetailPage() {
                 totalCredits - totalDebits >= 0 ? 'text-green-600' : 'text-red-600'
               }`}
             >
-              ${(totalCredits - totalDebits).toFixed(2)}
+              {formatINR(totalCredits - totalDebits)}
             </div>
           </CardContent>
         </Card>
@@ -194,10 +215,10 @@ export default function AccountDetailPage() {
                 <TableRow key={location}>
                   <TableCell className="font-medium">{location}</TableCell>
                   <TableCell className="text-green-600">
-                    ${data.credits.toFixed(2)}
+                    {formatINR(data.credits)}
                   </TableCell>
                   <TableCell className="text-red-600">
-                    ${data.debits.toFixed(2)}
+                    {formatINR(data.debits)}
                   </TableCell>
                   <TableCell
                     className={
@@ -239,7 +260,7 @@ export default function AccountDetailPage() {
                     {transaction.transactionNo}
                   </TableCell>
                   <TableCell>
-                    {new Date(transaction.date).toLocaleDateString()}
+                    {formatDate(transaction.date)}
                   </TableCell>
                   <TableCell>
                     <Badge

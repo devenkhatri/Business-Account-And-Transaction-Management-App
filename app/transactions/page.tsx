@@ -25,6 +25,17 @@ import { TransactionForm } from '@/components/forms/transaction-form';
 import { useLocationStore } from '@/store/use-location-store';
 import { Transaction, Account, Location } from '@/types';
 
+// Format currency in Indian Rupees
+const formatINR = (amount: number) => {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    currencyDisplay: 'symbol'
+  }).format(amount);
+};
+
 export default function TransactionsPage() {
   const { selectedLocationId } = useLocationStore();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -283,7 +294,7 @@ export default function TransactionsPage() {
                         {transaction.type}
                       </Badge>
                     </TableCell>
-                    <TableCell>${transaction.amount}</TableCell>
+                    <TableCell>{formatINR(transaction.amount)}</TableCell>
                     <TableCell>{transaction.account?.name}</TableCell>
                     <TableCell>{transaction.location?.name}</TableCell>
                     <TableCell>{transaction.description || '-'}</TableCell>

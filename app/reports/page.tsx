@@ -23,6 +23,17 @@ import { Download, FileText } from 'lucide-react';
 import { useLocationStore } from '@/store/use-location-store';
 import { Account, Location } from '@/types';
 
+// Format currency in Indian Rupees
+const formatINR = (amount: number) => {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    currencyDisplay: 'symbol'
+  }).format(amount);
+};
+
 export default function ReportsPage() {
   const { selectedLocationId } = useLocationStore();
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -186,7 +197,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="text-2xl font-bold text-green-600">
-                  ${reportData.totals.credits.toFixed(2)}
+                  {formatINR(reportData.totals.credits)}
                 </div>
               </CardContent>
             </Card>
@@ -199,7 +210,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="text-2xl font-bold text-red-600">
-                  ${reportData.totals.debits.toFixed(2)}
+                  {formatINR(reportData.totals.debits)}
                 </div>
               </CardContent>
             </Card>
@@ -241,10 +252,10 @@ export default function ReportsPage() {
                         {new Date(date).toLocaleDateString()}
                       </TableCell>
                       <TableCell className="text-green-600">
-                        ${data.credits.toFixed(2)}
+                      ₹{data.credits.toFixed(2)}
                       </TableCell>
                       <TableCell className="text-red-600">
-                        ${data.debits.toFixed(2)}
+                      ₹{data.debits.toFixed(2)}
                       </TableCell>
                       <TableCell
                         className={
@@ -284,10 +295,10 @@ export default function ReportsPage() {
                     <TableRow key={account}>
                       <TableCell className="font-medium">{account}</TableCell>
                       <TableCell className="text-green-600">
-                        ${data.credits.toFixed(2)}
+                      ₹{data.credits.toFixed(2)}
                       </TableCell>
                       <TableCell className="text-red-600">
-                        ${data.debits.toFixed(2)}
+                      ₹{data.debits.toFixed(2)}
                       </TableCell>
                       <TableCell
                         className={
@@ -296,7 +307,7 @@ export default function ReportsPage() {
                             : 'text-red-600'
                         }
                       >
-                        ${(data.credits - data.debits).toFixed(2)}
+                        ₹{(data.credits - data.debits).toFixed(2)}
                       </TableCell>
                       <TableCell>{data.count}</TableCell>
                     </TableRow>
