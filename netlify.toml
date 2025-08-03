@@ -8,18 +8,11 @@
   NODE_ENV = "production"
   PRISMA_SKIP_POSTINSTALL_GENERATE = "true"
 
-# Prisma configuration
+# Next.js plugin with Prisma support
 [[plugins]]
   package = "@netlify/plugin-nextjs"
   [plugins.inputs]
     enableNextJsLink = true
-    enablePrisma = true
-
-# Required build plugins
-[[plugins]]
-  package = "@netlify/plugin-prisma"
-  [plugins.inputs]
-    prismaSchemaPath = "./prisma/schema.prisma"
 
 # Redirects for SPA
 [[redirects]]
