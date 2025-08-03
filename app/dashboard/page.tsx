@@ -94,13 +94,14 @@ export default function DashboardPage() {
   // Additional safety check - if metrics is still undefined after loading, show loading
   if (isLoading || !metrics) {
     return (
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="container p-4 mx-auto">
+        <h1 className="mb-6 text-2xl font-bold md:mb-8">Dashboard</h1>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[...Array(4)].map((_, i) => (
-            <Card key={i}>
-              <CardContent className="p-6">
-                <div className="h-20 bg-gray-200 animate-pulse rounded"></div>
+            <Card key={i} className="h-full">
+              <CardContent className="p-4 sm:p-6">
+                <div className="h-5 w-3/4 mb-2 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
               </CardContent>
             </Card>
           ))}
@@ -110,46 +111,48 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+    <div className="w-full max-w-screen-xl px-3 mx-auto sm:px-4 md:px-6">
+      <h1 className="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl md:mb-8">
+        Dashboard
+      </h1>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Total Credits Today
+      <div className="grid grid-cols-1 gap-3 mb-6 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
+        <Card className="h-full transition-all duration-200 hover:shadow-md">
+          <CardHeader className="p-3 pb-1 sm:p-4 sm:pb-2">
+            <CardTitle className="text-xs font-medium text-gray-600 sm:text-sm">
+              Total Credits
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-2xl font-bold text-green-600">
+          <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+            <div className="text-lg font-bold text-green-600 sm:text-xl md:text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
               {formatINR(safeMetrics.totalCredits)}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Total Debits Today
+        <Card className="h-full transition-all duration-200 hover:shadow-md">
+          <CardHeader className="p-3 pb-1 sm:p-4 sm:pb-2">
+            <CardTitle className="text-xs font-medium text-gray-600 sm:text-sm">
+              Total Debits
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-2xl font-bold text-red-600">
+          <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+            <div className="text-lg font-bold text-red-600 sm:text-xl md:text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
               {formatINR(safeMetrics.totalDebits)}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Net Balance Today
+        <Card className="h-full transition-all duration-200 hover:shadow-md">
+          <CardHeader className="p-3 pb-1 sm:p-4 sm:pb-2">
+            <CardTitle className="text-xs font-medium text-gray-600 sm:text-sm">
+              Net Balance
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-0">
+          <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
             <div
-              className={`text-2xl font-bold ${
+              className={`text-lg font-bold sm:text-xl md:text-2xl whitespace-nowrap overflow-hidden text-ellipsis ${
                 safeMetrics.netBalance >= 0 ? 'text-green-600' : 'text-red-600'
               }`}
             >
@@ -158,14 +161,14 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Transactions Today
+        <Card className="h-full transition-all duration-200 hover:shadow-md">
+          <CardHeader className="p-3 pb-1 sm:p-4 sm:pb-2">
+            <CardTitle className="text-xs font-medium text-gray-600 sm:text-sm">
+              Transactions
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-2xl font-bold text-blue-600">
+          <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+            <div className="text-lg font-bold text-blue-600 sm:text-xl md:text-2xl">
               {safeMetrics.transactionCount}
             </div>
           </CardContent>
@@ -173,30 +176,42 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Daily Transaction Amounts (Last 7 Days)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <DailyBalanceChart data={chartData} />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Account-wise Transaction Totals</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {accountData.length > 0 ? (
-              <AccountPieChart data={accountData} />
-            ) : (
-              <div className="h-80 flex items-center justify-center text-gray-500">
-                No data available
+      <div className="flex flex-col w-full gap-4 mb-6 sm:gap-6">
+        <div className="w-full">
+          <Card className="w-full overflow-hidden">
+            <CardHeader className="p-4 pb-2 sm:p-6 sm:pb-4">
+              <CardTitle className="text-base sm:text-lg">
+                Daily Transactions (7 Days)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] px-2 pb-2 sm:px-4 sm:pb-4">
+                <DailyBalanceChart data={chartData} />
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="w-full">
+          <Card className="w-full overflow-hidden">
+            <CardHeader className="p-4 pb-2 sm:p-6 sm:pb-4">
+              <CardTitle className="text-base sm:text-lg">
+                Account-wise Totals
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] px-2 pb-2 sm:px-4 sm:pb-4">
+                {accountData.length > 0 ? (
+                  <AccountPieChart data={accountData} />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full text-sm text-gray-500 sm:text-base">
+                    No data available
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
